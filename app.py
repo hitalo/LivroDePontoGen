@@ -1,8 +1,12 @@
-from pdf_gen import PDFGen
-from data_manager import DataManager
+import gi
 
-data_manager = DataManager()
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
-doc = PDFGen()
-doc.create_new_document(31, 6, 2, data_manager.get_names())
-doc.build()
+from main_gui import MainWindow
+
+
+win = MainWindow()
+win.connect("destroy", Gtk.main_quit)
+win.show_all()
+Gtk.main()

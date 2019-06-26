@@ -4,6 +4,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from data_model import DataModel
+from pdf_gen import PDFGen
+from data_manager import DataManager
 
 class MainWindow(Gtk.Window):
 
@@ -12,6 +14,8 @@ class MainWindow(Gtk.Window):
 
         self.set_border_width(10)
         self.set_resizable(False)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.data_model = DataModel()
         self.month = 0
         self.day1 = 0
 
@@ -98,15 +102,54 @@ class MainWindow(Gtk.Window):
 
 
     def create_pdf(self, button):
-        data_model = DataModel()
+        self.data_model.name = self.name_entry.get_text().strip()
+        self.data_model.month = self.month
+        self.data_model.is_leapyear = self.check_leapyear.get_active()
+        self.data_model.day1 = self.day1
 
-        data_model.name = self.name_entry.get_text()
-        data_model.month = self.month
-        data_model.is_leapyear = self.check_leapyear.get_active()
-        data_model.day1 = self.day1
+        if(self.validate()):
+
+            data_manager = DataManager()
+
+            doc = PDFGen()
+            doc.create_new_document(31, 6, 2, data_manager.get_names())
+            doc.build()
+
+            win = MessageDialogWindow("PDF Gerado")
+            win.connect("destroy", Gtk.main_quit)
+            win.show_all()
+            Gtk.main()
+
+        else:
+
+            win = MessageDialogWindow("Dados inválidos")
+            win.connect("destroy", Gtk.main_quit)
+            win.show_all()
+            Gtk.main()
 
 
-win = MainWindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+
+
+
+    def validate(self):
+        if (self.data_model.name):
+            return True
+        else:
+            return False
+
+
+
+class MessageDialogWindow(Gtk.Window):
+
+    def __init__(self, text):
+        Gtk.Window.__init__(self, title="Aviso")
+
+        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+
+        self.add(box)
+        self.set_default_size(500, 100)
+        self.set_position(Gtk.WindowPosition.CENTER)
+
+        label = Gtk.Label(text)
+        label.set_hexpand(True)
+        box.pack_start(label, False, False, True)
