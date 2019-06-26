@@ -1,0 +1,6 @@
+.ideia
+.~lock.nomes.csv#
+__pycache__/
+nomes.csv
+*.pdf
+venv/
