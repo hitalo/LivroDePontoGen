@@ -34,9 +34,10 @@ class App:
             months.append(str(month))
 
         self.month_cb = ttk.Combobox(frame, values=months)
-        self. month_cb.grid(row=1, column=1, columnspan=1, sticky="W", pady=10)
+        self.month_cb.grid(row=1, column=1, columnspan=1, sticky="W", pady=10)
+        self.month_cb.bind("<<ComboboxSelected>>", self.check_leap)
 
-        self.leapyear_chk = Checkbutton(frame, text="Ano Bissexto?", variable=self.is_leapyear)
+        self.leapyear_chk = Checkbutton(frame, text="Ano Bissexto?", state=DISABLED, variable=self.is_leapyear)
         self.leapyear_chk.grid(row=1, column=2, columnspan=1, pady=10, sticky='W')
 
         day1 = Label(frame, text="Dia 1 será:")
@@ -98,6 +99,13 @@ class App:
             return False
         else:
             return True
+
+
+    def check_leap(self, event):
+        if(self.month_cb.current() == 1):
+            self.leapyear_chk['state'] = 'normal'
+        else:
+            self.leapyear_chk['state'] = 'disabled'
 
 
 root = Tk()
