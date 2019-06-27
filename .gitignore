@@ -4,3 +4,6 @@ __pycache__/
 nomes.csv
 *.pdf
 venv/
+
+dist
+build
