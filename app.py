@@ -73,7 +73,7 @@ class App:
             data_manager = DataManager()
 
             doc = PDFGen()
-            doc.create_new_document(days, self.data_model.month, self.data_model.day1, data_manager.get_names())
+            doc.create_new_document(self.data_model.name, days, self.data_model.month, self.data_model.day1, data_manager.get_names())
             doc.build()
 
 
