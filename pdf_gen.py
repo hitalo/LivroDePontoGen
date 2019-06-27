@@ -38,7 +38,7 @@ class PDFGen:
             # saturday
             if (i % 7 == diff):
                 data_table.append(["{:02d}".format(i) + '-' + "{:02d}".format(month), ':', 'SÁBADO', '', '', ':', ':', 'SÁBADO', '', '', ':'])
-            elif (i % 7 == diff + 1):  # sunday
+            elif (i % 7 == diff + 1 or (diff == 6 and i % 7 == 0)):  # sunday
                 data_table.append(["{:02d}".format(i) + '-' + "{:02d}".format(month), ':', 'DOMINGO', '', '', ':', ':', 'DOMINGO', '', '', ':'])
             else:
                 data_table.append(["{:02d}".format(i) + '-' + "{:02d}".format(month), ':', '', '', '', ':', ':', '', '', '', ':'])
@@ -70,7 +70,7 @@ class PDFGen:
 
         # different color for saturdays and sundays
         for i in range(1, rows + 1, 1):
-            if (i % 7 == diff  or i % 7 == diff + 1):
+            if (i % 7 == diff  or i % 7 == diff + 1 or (diff == 6 and i % 7 == 0)):
                 table_style.append(('BACKGROUND', (0, i), (11, i), colors.gray))
 
         return table_style
