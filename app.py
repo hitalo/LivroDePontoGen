@@ -48,8 +48,14 @@ class App:
         self.day1_cb = ttk.Combobox(frame, values=days)
         self.day1_cb.grid(row=2, column=1, columnspan=1, sticky="WE", pady=10)
 
+        vacations_lb = Label(frame, text="Feriados (Números separados por vírgula):")
+        vacations_lb.grid(row=3, column=0, columnspan=3, sticky='WE', pady=10)
+
+        self.vacations_en = Entry(frame, bd=5)
+        self.vacations_en.grid(row=4, column=0, columnspan=3, sticky="WE", pady=3)
+
         pdf_bt = Button(frame, text="Gerar PDF", command=self.create_pdf)
-        pdf_bt.grid(row=3, column=0, columnspan=3, pady=(30,5))
+        pdf_bt.grid(row=5, column=0, columnspan=3, pady=(30,5))
 
 
     def create_pdf(self):
@@ -57,6 +63,7 @@ class App:
         self.data_model.month = self.month_cb.get().strip()
         self.data_model.is_leapyear = self.is_leapyear.get()
         self.data_model.day1 = self.day1_cb.current()
+        self.data_model.vacations = self.vacations_en.get().replace(" ", "").split(',')
 
         if(self.validate()):
 
@@ -73,7 +80,7 @@ class App:
             data_manager = DataManager()
 
             doc = PDFGen()
-            doc.create_new_document(self.data_model.name, days, self.data_model.month, self.data_model.day1, data_manager.get_names())
+            doc.create_new_document(days, self.data_model, data_manager.get_names())
             doc.build()
 
 
@@ -87,6 +94,11 @@ class App:
 
         try:
             self.data_model.day1 = int(self.data_model.day1)
+        except ValueError:
+            return False
+
+        try:
+            self.data_model.vacations = [int(x) for x in self.data_model.vacations]
         except ValueError:
             return False
 
