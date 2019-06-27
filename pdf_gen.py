@@ -8,13 +8,14 @@ class PDFGen:
 
     elements = []
 
-    def create_new_document(self, rows, month, day1, data):
+    def create_new_document(self, name, rows, month, day1, data):
 
-        self.doc = SimpleDocTemplate("simple_table_grid.pdf", pagesize=A4, rightMargin=0, leftMargin=0, topMargin=0, bottomMargin=0)
+        self.doc = SimpleDocTemplate("pdfs/" + name + ".pdf", pagesize=A4, rightMargin=0, leftMargin=0, topMargin=0, bottomMargin=0)
 
         # how much for saturday, assuming (0 - monday, 6 - sunday)
         diff = (6 - day1)
 
+        data.sort()
         for name in data:
 
             data_table = self.make_table(name, rows, month, diff)
