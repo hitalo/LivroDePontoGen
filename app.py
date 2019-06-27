@@ -63,7 +63,10 @@ class App:
         self.data_model.month = self.month_cb.get().strip()
         self.data_model.is_leapyear = self.is_leapyear.get()
         self.data_model.day1 = self.day1_cb.current()
-        self.data_model.vacations = self.vacations_en.get().replace(" ", "").split(',')
+        self.data_model.vacations = []
+
+        if self.vacations_en.get():
+            self.data_model.vacations = self.vacations_en.get().replace(" ", ",").split(',')
 
         if(self.validate()):
 
@@ -97,10 +100,11 @@ class App:
         except ValueError:
             return False
 
-        try:
-            self.data_model.vacations = [int(x) for x in self.data_model.vacations]
-        except ValueError:
-            return False
+        if self.data_model.vacations:
+            try:
+                self.data_model.vacations = [int(x) for x in self.data_model.vacations]
+            except ValueError:
+                return False
 
 
         if not (self.data_model.name):
