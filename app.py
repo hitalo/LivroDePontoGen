@@ -1,6 +1,7 @@
 # encoding: utf-8
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 from data_model import DataModel
 from pdf_gen import PDFGen
@@ -66,7 +67,7 @@ class App:
         self.data_model.vacations = []
 
         if self.vacations_en.get():
-            self.data_model.vacations = self.vacations_en.get().replace(" ", ",").split(',')
+            self.data_model.vacations = self.vacations_en.get().replace(" ", "").split(',')
 
         if(self.validate()):
 
@@ -85,6 +86,11 @@ class App:
             doc = PDFGen()
             doc.create_new_document(days, self.data_model, data_manager.get_names())
             doc.build()
+
+            messagebox.showinfo("Concluído", "PDF gerado")
+
+        else:
+            messagebox.showerror("Erro", "Dados inválidos")
 
 
 
@@ -125,5 +131,6 @@ class App:
 
 
 root = Tk()
+root.title("Gerar Livro de Ponto")
 app = App(root)
 root.mainloop()
