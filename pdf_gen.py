@@ -38,7 +38,7 @@ class PDFGen:
 
     def make_table(self, name, rows, month, vacations, diff):
 
-        data_table = [[name]]
+        data_table = [[name.decode('cp1252').encode('utf-8')]]
         data_table.append(["Data", 'Entrada', 'Assinatura', '', '', 'Saída', 'Entrada', 'Assinatura', '', '', 'Saída'])
         for i in range(1, rows + 1, 1):
 
